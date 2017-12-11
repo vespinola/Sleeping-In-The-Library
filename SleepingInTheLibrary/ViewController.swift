@@ -65,19 +65,15 @@ class ViewController: UIViewController {
                 let photoDictionary = photoArray[randomPhotoIndex] as [String:AnyObject]
                 
                 if let imageUrlString = photoDictionary[Constants.FlickrResponseKeys.MediumURL] as? String, let photoTitle = photoDictionary[Constants.FlickrResponseKeys.Title] as? String {
-                    print(imageUrlString)
-                    print(photoTitle)
-                    
-                    if let imageUrlString = photoDictionary[Constants.FlickrResponseKeys.MediumURL] as? String, let photoTitle = photoDictionary[Constants.FlickrResponseKeys.Title] as? String {
-                        
-                        let imageURL = URL(string: imageUrlString)
-                        if let imageData = try? Data(contentsOf: imageURL!) {
-                            performUIUpdatesOnMain {
-                                self.photoImageView.image = UIImage(data: imageData)
-                                self.photoTitleLabel.text = photoTitle
-                                self.setUIEnabled(true)
-                            }
+                    let imageURL = URL(string: imageUrlString)
+                    if let imageData = try? Data(contentsOf: imageURL!) {
+                        performUIUpdatesOnMain {
+                            self.photoImageView.image = UIImage(data: imageData)
+                            self.photoTitleLabel.text = photoTitle
+                            self.setUIEnabled(true)
                         }
+                    } else {
+                        Util.showAlert(for: "Image does not exist at \(String(describing: imageURL))", in: self)
                     }
                 }
             }
